@@ -18,7 +18,6 @@ const validateParams = (schema, name) => {
 const validatorBody = (schema) => {
     return (req, res, next) => {
         const validatorResult = schema.validate(req.body)
-        console.log(validatorResult);
         if (validatorResult.error) {
             return res.status(404).json({ message: validatorResult.error })
         } else {
@@ -55,6 +54,22 @@ const schemas = {
         decs: Joi.string().min(1),
         totals: Joi.number(),
         owner: Joi.string().regex(/^[0-9a-fA-F]{24}$/)
+    }),
+    signUpSchema: Joi.object().keys({
+        firstName: Joi.string().min(1).max(20).required(),
+        lastName: Joi.string().min(1).max(20).required(),
+        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['net', 'com', 'vn'] } }).required(),
+        password: Joi.string().min(6).max(15).required()
+    }),
+    signUpSchema: Joi.object().keys({
+        firstName: Joi.string().min(1).max(20).required(),
+        lastName: Joi.string().min(1).max(20).required(),
+        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['net', 'com', 'vn'] } }).required(),
+        password: Joi.string().min(6).max(15).required()
+    }),
+    signInSchema: Joi.object().keys({
+        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['net', 'com', 'vn'] } }).required(),
+        password: Joi.string().min(6).max(15).required(),
     })
 }
 
